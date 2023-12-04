@@ -45,6 +45,13 @@ jobs:
        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.16.2/migrate.linux-amd64.tar.gz | tar xvz
        sudo mv migrate /usr/bin/
 
+    - name: Wait for PostgreSQL to be ready
+      run: |
+        until pg_isready -h postgres -U root; do
+          echo "Waiting for PostgreSQL to be ready..."
+          sleep 5
+        done    
+        
     - name: Run migrations
       run: |
        migrate -path db/migration -database "postgresql://root:password@postgres:5432/simple_bank?sslmode=disable" -verbose up
