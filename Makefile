@@ -16,5 +16,7 @@ migratedown:
 sqlc:
 	sqlc generate
 
-.PHONY: createdb, dropdb, postgres, migrateup, migratedown, sqlc
+test:
+	go test -v -cover ./..
+.PHONY: createdb, dropdb, postgres, migrateup, migratedown, sqlc, test
 # .PHONY is to specify it is a command in the Makefile instead of a file
