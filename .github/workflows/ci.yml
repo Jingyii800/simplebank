@@ -39,6 +39,13 @@ jobs:
     - name: Checkout code into the Go module library
       uses: actions/checkout@v3
 
+    - name: Wait for PostgreSQL
+      run: |
+        until pg_isready -h localhost -p 5433 -U root; do
+          echo waiting for database
+          sleep 2
+        done
+
     - name: Install golang-migrate CLI
       run: |
        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.16.2/migrate.linux-amd64.tar.gz | tar xvz
