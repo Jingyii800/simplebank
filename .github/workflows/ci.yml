@@ -23,7 +23,7 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: simple_bank
         ports:
-          - 5433:5432
+          - 5433:5433
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -47,7 +47,7 @@ jobs:
 
     - name: Run migrations
       run: |
-       migrate -path db/migration -database "postgresql://root:password@postgres:5432/simple_bank?sslmode=disable" -verbose up
+       migrate -path db/migration -database "postgresql://root:password@postgres:5433/simple_bank?sslmode=disable" -verbose up
 
     - name: Test
       run: make test
