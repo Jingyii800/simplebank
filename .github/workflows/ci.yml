@@ -31,10 +31,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-    - name: Check PostgreSQL Accessibility
-      run: |
-        pg_isready -h postgres -p 5433 -U root
-  
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
