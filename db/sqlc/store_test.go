@@ -91,23 +91,23 @@ func TestTransferTx(t *testing.T) {
 		require.Equal(t, diff1, diff2)
 		require.True(t, diff1 > 0)
 		require.True(t, diff1%amount == 0) // amount, 2*amount, 3*amount
-		
+
 		k := int(diff1 / amount)
 		require.True(t, k >= 1 && k <= n)
 		require.NotContains(t, existed, k)
 		existed[k] = true
 	}
-		// check the final updated balance
-		updatedAccount1, err := testStore.GetAccount(context.Background(), account1.ID)
-		require.NoError(t, err)
-	
-		updatedAccount2, err := testStore.GetAccount(context.Background(), account2.ID)
-		require.NoError(t, err)
-	
-		fmt.Println(">> after:", updatedAccount1.Balance, updatedAccount2.Balance)
-	
-		require.Equal(t, account1.Balance-int64(n)*amount, updatedAccount1.Balance)
-		require.Equal(t, account2.Balance+int64(n)*amount, updatedAccount2.Balance)
+	// check the final updated balance
+	updatedAccount1, err := testStore.GetAccount(context.Background(), account1.ID)
+	require.NoError(t, err)
+
+	updatedAccount2, err := testStore.GetAccount(context.Background(), account2.ID)
+	require.NoError(t, err)
+
+	fmt.Println(">> after:", updatedAccount1.Balance, updatedAccount2.Balance)
+
+	require.Equal(t, account1.Balance-int64(n)*amount, updatedAccount1.Balance)
+	require.Equal(t, account2.Balance+int64(n)*amount, updatedAccount2.Balance)
 }
 
 func TestTransferTxDeadlock(t *testing.T) {
