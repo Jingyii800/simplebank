@@ -85,7 +85,7 @@ func TestListAccounts(t *testing.T) {
 		lastAccount = createRandomAccount(t)
 	}
 
-	arg := ListAccountsParams{
+	arg := ListAccountParams{
 		Owner:  lastAccount.Owner,
 		Limit:  5,
 		Offset: 0,

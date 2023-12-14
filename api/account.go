@@ -2,9 +2,11 @@ package api
 
 import (
 	"database/sql"
+	"errors"
 	"net/http"
 
 	db "github.com/Jingyii800/simplebank/db/sqlc"
+	"github.com/Jingyii800/simplebank/token"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,9 +22,12 @@ func (server *Server) createAccount(ctx *gin.Context) {
 		return
 	}
 
+	// add auth
+	// login user can only create an account for itself
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 	// insert new accoun into db
 	arg := db.CreateAccountParams{
-		Owner:    req.Owner,
+		Owner:    authPayload.Username, // add
 		Currency: req.Currency,
 		Balance:  0,
 	}
@@ -56,6 +61,13 @@ func (server *Server) getAccount(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
+	// add auth
+	// a logged in user can get accounts it has
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if account.Owner != authPayload.Username {
+		err := errors.New("account doesn't belong to the authenticated user")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+	}
 
 	ctx.JSON(http.StatusOK, account)
 
@@ -73,8 +85,11 @@ func (server *Server) listAccount(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
+	// a logged in user can only list accounts belong to it
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 
 	arg := db.ListAccountParams{
+		Owner:  authPayload.Username, //add
 		Limit:  req.PageSize,
 		Offset: (int32(req.PageId) - 1) * int32(req.PageId),
 	}
