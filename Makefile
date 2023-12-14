@@ -21,5 +21,11 @@ test:
 
 server:
 	go run main.go
-.PHONY: createdb, dropdb, postgres, migrateup, migratedown, sqlc, test,server
+
+db_docs:
+	dbdocs build doc/db.dbml
+
+db_sql:
+	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
+.PHONY: createdb, dropdb, postgres, migrateup, migratedown, sqlc, test,server, db_docs, db_sql
 # .PHONY is to specify it is a command in the Makefile instead of a file
