@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pb;
+
+import "user.proto";
+
+option go_package = "github.com/Jingyii800/simplebank/pb";
+
+// Unary gRPC
+// define request and response data structure of API
+message CreateUserRequest {
+    string username = 1; // field number 1
+    string full_name = 2;
+    string email = 3;
+    string password = 4;
+}
+
+message CreateUserResponse {
+    User user = 1;
+}

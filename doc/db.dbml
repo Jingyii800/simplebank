@@ -16,6 +16,7 @@ Table users as U {
   created_at timestamptz [not null, default: `now()`]
 }
 
+// for email verified
 Table verify_emails {
   id bigserial [pk]
   username varchar [ref: > U.username, not null]
