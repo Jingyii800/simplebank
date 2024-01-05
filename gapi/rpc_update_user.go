@@ -17,7 +17,7 @@ import (
 
 func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
 	// add authorization to protect api
-	authpayload, err := server.authorizeUser(ctx)
+	authpayload, err := server.authorizeUser(ctx, []string{util.BankRole, util.DepositorRole})
 	if err != nil {
 		return nil, unauthenticatedError(err)
 	}
@@ -27,7 +27,7 @@ func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 		return nil, invalidArgumentError(violations)
 	}
 	// if the authpayload doesn't match the username in req field, access deny
-	if authpayload.Username != req.GetUsername() {
+	if authpayload.Role != util.BankRole && authpayload.Username != req.GetUsername() {
 		return nil, status.Errorf(codes.PermissionDenied, "cannot update other user's info")
 	}
 

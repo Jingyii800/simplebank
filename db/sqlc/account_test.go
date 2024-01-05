@@ -91,7 +91,7 @@ func TestListAccounts(t *testing.T) {
 		Offset: 0,
 	}
 
-	accounts, err := testStore.ListAccounts(context.Background(), arg)
+	accounts, err := testStore.ListAccount(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, accounts)
 
