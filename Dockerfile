@@ -1,4 +1,4 @@
-FROM golang:1.21.5-alpine
+FROM golang:1.21.5-alpine AS builder
 WORKDIR /app
 COPY . .
 RUN go build -o main main.go
@@ -12,5 +12,6 @@ COPY start.sh .
 COPY wait-for.sh .
 COPY db/migration ./db/migration
 
-EXPOSE 8080
+EXPOSE 8080 8888
 CMD [ "/app/main" ]
+ENTRYPOINT [ "/app/start.sh" ]
