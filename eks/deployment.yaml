@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-server-api-deployment
+  labels:
+    app: bank-server-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bank-server-api
+  template:
+    metadata:
+      labels:
+        app: bank-server-api
+    spec:
+      containers:
+      - name: bank-server-api
+        image: 157305743935.dkr.ecr.us-east-1.amazonaws.com/bankserver:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http-server
+        - containerPort: 8888
+          name: grpc-server
