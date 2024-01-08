@@ -12,6 +12,9 @@ COPY start.sh .
 COPY wait-for.sh .
 COPY db /app/db
 
+# Make sure the script is executable
+RUN chmod +x /app/start.sh
+
 EXPOSE 8080 8888
-CMD [ "/app/main" ]
 ENTRYPOINT [ "/app/start.sh" ]
+CMD [ "/app/main" ]
